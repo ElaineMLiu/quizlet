@@ -1,0 +1,132 @@
+<% include partials/header %>
+<div class = "container_no_shrink">
+<h2><%= title %> </h2>
+<hr>
+<h1><%= quiz.title %></h1>
+<h3><%= quiz.description %> </h3>
+<p>Created: <%= quiz.created_at %> </p><hr>
+
+<form method="POST" action="/quizzes/questions/add/<%= quiz._id %>">
+<div class="makeQuestionWell">
+  <div id="form-group" >
+    <input class="form-control" name="question" type= "text" placeholder="What holds the Earth around the Sun?">
+  </div>
+
+  <div class = "row">
+    <div class = "col-md-1">
+        <h3><label class="radio-inline"><input type="radio" name="choiceCorrect" value="choiceA">A</label></h3>
+    </div>
+    <div class = "col-md-5">
+      <div id="form-group" >
+        <h3><input class="form-control" name="choiceA" type= "text" maxlength="28" placeholder="Electric Force"></h3>
+      </div>
+    </div>
+
+    <div class = "col-md-1">
+        <h3><label class="radio-inline"><input type="radio" name="choiceCorrect" value="choiceB">B</label></h3>
+    </div>
+    <div class = "col-md-5">
+      <div id="form-group" >
+        <h3><input class="form-control" name="choiceB" type= "text" maxlength="28" placeholder="Gravitational Force"></h3>
+      </div>
+    </div>
+
+    <div class = "col-md-1">
+        <h3><label class="radio-inline"><input type="radio" name="choiceCorrect" value="choiceC">C</label></h3>
+    </div>
+    <div class = "col-md-5">
+      <div id="form-group" >
+        <h3><input class="form-control" name="choiceC" type= "text" maxlength="28" placeholder="Strong Force"></h3>
+      </div>
+    </div>
+
+    <div class = "col-md-1">
+        <h3><label class="radio-inline"><input type="radio" name="choiceCorrect" value="choiceD">D</label></h3>
+    </div>
+    <div class = "col-md-5">
+      <div id="form-group" >
+        <h3><input class="form-control" name="choiceD" type= "text" maxlength="28" placeholder="Weak Force"></h3>
+      </div>
+    </div>
+  </div>
+  <input class = "btn btn-primary" type="submit" value="OK">
+</form>
+</div>
+<hr>
+
+<ul class="list-group">
+  <% questions.forEach(function(question){ %>
+
+    <li class="list-group-item">
+
+        <div class="row">
+          <div class="col-md-12  col-sd-12">
+            <h3><%= question.question %> </h3>
+            <%= question.order %>
+            <%= question.choiceCorrect %>
+            <%= question.author %>
+            <%= question.included %>
+          </div>
+
+          <div class="col-md-5  col-sd-5">
+            <% if(question.choiceCorrect==='choiceA'){ %>
+              <h3 style="background-color: #dff0d8;" >
+                A <%= question.choiceA %>
+              </h3>
+            <% }else{ %>
+              <h3>
+                A <%= question.choiceA %>
+              </h3>
+            <% } %>
+          </div>
+          <div class="col-md-5  col-sd-5">
+            <% if(question.choiceCorrect==='choiceB'){ %>
+              <h3 style="background-color: #dff0d8;" >
+                B <%= question.choiceB %>
+              </h3>
+            <% }else{ %>
+              <h3>
+                B <%= question.choiceB %>
+              </h3>
+            <% } %>
+          </div>
+          <div class="col-md-2  col-sd-2">
+            <h3>
+              <a href="/quizzes/questions/edit/<%= quiz._id %>/<%= question._id %>" class="btn btn-primary" role="button">Edit</a>
+            </h3>
+          </div>
+          <div class="col-md-5  col-sd-5">
+            <% if(question.choiceCorrect==='choiceC'){ %>
+              <h3 style="background-color: #dff0d8;" >
+                C <%= question.choiceC %>
+              </h3>
+            <% }else{ %>
+              <h3>
+                C <%= question.choiceC %>
+              </h3>
+            <% } %>
+          </div>
+          <div class="col-md-5  col-sd-5">
+            <% if(question.choiceCorrect==='choiceD'){ %>
+              <h3 style="background-color: #dff0d8;" >
+                D <%= question.choiceD %>
+              </h3>
+            <% }else{ %>
+              <h3>
+                D <%= question.choiceD %>
+              </h3>
+            <% } %>
+          </div>
+          <div class="col-md-2  col-sd-2">
+            <h3>
+              <a href="#" class="btn btn-danger delete-question" data-id="<%= question._id %>" data-qid="<%= quiz._id %>" role="button">Delete</a>
+            </h3>
+          </div>
+        </div>
+    </li>
+  <%  })  %>
+
+</ul>
+
+</div>
+<% include partials/footer %>

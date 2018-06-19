@@ -1,0 +1,20 @@
+<% include partials/header %>
+<h1><%= title %> </h1>
+
+<% users.forEach(function(user){ %>
+    <%= user._id %><br>
+    <%= user.name %><br>
+    <%= user.email %><br>
+    <%= user.role %><br>
+    <%= user.class %><br>
+    <%= user.class_title %><br>
+    <%= user.password %><br>
+
+    <hr>
+<%  })  %>
+
+
+
+
+
+<% include partials/footer %>

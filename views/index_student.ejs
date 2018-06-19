@@ -1,0 +1,34 @@
+<% include partials/header %>
+<h1><%= title %> </h1>
+
+<ul class="list-group">
+  <% quizzes.forEach(function(quiz){ %>
+
+    <li class="list-group-item">
+
+        <div class="row">
+          <div class="col-md-8  col-sd-6">
+            <h3><%= quiz.title %> </h3>
+            <%= quiz.created_at %>
+          </div>
+          <div class="col-md-4  col-sd-6 pull-right">
+            <h3>
+              <!-- a href="/quizzes/edit/<%= quiz._id %>" class="btn btn-default" role="button">About</a -->
+              <!--a href="/quizzes/questions/add/<%= quiz._id %>" class="btn btn-primary" role="button">Edit</a -->
+              <% if(quiz.reviewable == true){ %>
+                <a href="/student/<%= quiz._id %>" target="_blank" class="btn btn-success" role="button">Play <span class="badge"><%= quiz.plays %></span></a>
+              <% } %>
+
+              <!--a href="#"  role="button" class="btn btn-danger delete-quiz" data-id ="<%= quiz._id %>" >Delete</a -->
+            </h3>
+          </div>
+        </div>
+    </li>
+  <%  })  %>
+
+</ul>
+
+
+
+
+<% include partials/footer %>

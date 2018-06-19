@@ -1,0 +1,179 @@
+<% include partials/header2 %>
+<div class= "pages">
+  <div class="login page">
+    <h1><%= quiz.title %></h1>
+    <span style="color:#317eac;">created_at   </span><%= quiz.created_at %><br>
+    <span style="color:#317eac;">class code   </span><%= quiz.class %><br>
+    <span style="color:#317eac;">already played   </span><%= quiz.plays %> times<br>
+    <span style="color:#317eac;">description   </span><%= quiz.description %><hr>
+    <h5> Students Online: </h5>
+    <p id="numStudents">0</p><br>
+    <p id="roster"></p>
+    <button class="btn btn-success" id="startQuiz"> Start Quiz! </button>
+    <hr>
+    <p>Students, please log in at <p>
+    <h3><p> localhost:3000/student/<span id="quizId"><%= quiz._id %></span></p></h3>
+    <a href="/student/<%= quiz._id %>" target="_blank" class="btn btn-default" role="button">Demo Student <span class="badge"><%= quiz.plays %></span></a>
+
+  </div>
+  <div class = "questionPage">
+    <h1>Question <span class="whichQuestion"></span> of <span class="numQuestions"></span></h1>
+    <div id="questionContent"></div>
+    <br>
+    <button id="show" class="btn btn-success"> Show </button>
+  </div>
+  <div class = "answerPage">
+    <h1>Question <span class="whichQuestion"></span> of <span class="numQuestions"></span></h1>
+    <div id="answerContent"></div>
+    <br>
+    <button id="next" class="btn btn-primary"> Next </button>
+  </div>
+  <div class="overPage">
+    <h1>Quiz Over </h1>
+  </div>
+</div>
+
+<!--
+<ul class="list-group">
+  <% questions.forEach(function(question){ %>
+      <%= question._id %><br>
+      <%= question.quiz_id %><br>
+      <%= question.question %><br>
+      <%= question.order %><br>
+      <%= question.choiceA %><br>
+      <%= question.choiceB %><br>
+      <%= question.choiceC %><br>
+      <%= question.choiceD %><br>
+      <%= question.choiceCorrect %><br>
+      <%= question.author %><br>
+      <%= question.included %><br>
+      <hr>
+
+
+  <%  })  %>
+-->
+
+</ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const quizId = $('#quizId').html();
+  const $numStudents = $('#numStudents');
+  const $startQuiz = $('#startQuiz');
+  //const $endQuiz = $('#endQuiz');
+  const $show =  $('#show');
+  const $next =  $('#next');
+  const $roster = $('#roster');
+  //const quizId = $('#quizId').html();
+
+  const $loginPage = $('.login.page');
+  const $questionPage = $('.questionPage');
+  const $answerPage = $('.answerPage');
+  const $overPage = $('.overPage');
+
+  var q=0; //keep track of which question we're on
+  var numQuestions;
+  $questionPage.hide();
+  $answerPage.hide();
+  $overPage.hide();
+
+  $startQuiz.click(function() {
+    socket.emit("start quiz", quizId);
+  });
+
+  socket.on("start quiz", function(msg){
+    console.log(msg);
+    numQuestions = msg.numQuestions;
+    console.log("/questionPage/"+msg.questionId);
+    $.get("/questionPage/"+msg.questionId, function(data){
+      $("#questionContent").html(data);
+    });
+    $('.whichQuestion').html(msg.q+1+" ");
+    $('.numQuestions').html(msg.numQuestions);
+    //$loginPage.fadeOut();
+    $loginPage.hide();
+    $loginPage.off('click');
+    $questionPage.show();
+  }); //end 'start quiz'
+
+
+  $show.click(function() {
+    socket.emit("show answer", {quizId: quizId, q: q});
+  });
+
+  socket.on("show answer", function(msg){
+      console.log(msg);
+      console.log("/answerPage/"+msg.questionId);
+      $.get("/answerPage/"+msg.questionId, function(data){
+        $("#answerContent").html(data);
+      });
+      $('.whichQuestion').html(msg.q+1+" ");
+      $('.numQuestions').html(msg.numQuestions);
+      //$questionPage.fadeOut();
+      $questionPage.hide();
+      $questionPage.off('click');
+      $answerPage.show();
+    }); //end 'start quiz'
+
+    $next.click(function() {
+      if(q==numQuestions-1){
+        socket.emit('end quiz', {quizId: quizId});
+      }else{
+        ++q;
+        socket.emit("next question", {quizId: quizId, q: q});
+      }
+
+    });
+
+
+    socket.on("next question", function(msg){
+      console.log(msg);
+      console.log("/questionPage/"+msg.questionId);
+      $.get("/questionPage/"+msg.questionId, function(data){
+        $("#questionContent").html(data);
+      });
+      $('.whichQuestion').html(msg.q+1+" ");
+      $('.numQuestions').html(msg.numQuestions);
+      //$answerPage.fadeOut();
+      $answerPage.hide();
+      $answerPage.off('click');
+      $questionPage.show();
+    }); //end 'start quiz'
+
+  socket.on("end quiz", function(msg) {
+    console.log(msg);
+    //$answerPage.fadeOut();
+    $answerPage.hide();
+    $answerPage.off('click');
+    $overPage.show();
+  });
+
+
+
+  socket.on("user left", function(msg) {
+    console.log("users: " + msg.numUsers);
+    updateUsers2(msg);
+  });
+
+
+  socket.on("user joined", function(msg) {
+    console.log("users: " + msg.numUsers);
+    updateUsers(msg);
+  });
+
+  const updateUsers = function(msg) {
+    $numStudents.html(msg.numUsers);
+    $roster.append(msg.username+'<br>');
+  }
+  const updateUsers2 = function(msg) {
+    $numStudents.html(msg.numUsers);
+    //$roster.append(msg.username+'<br>');
+  }
+
+
+
+</script>
+
+<% include partials/footer2 %>

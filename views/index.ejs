@@ -1,0 +1,57 @@
+<% include partials/header %>
+<h1><%= title %> </h1>
+<h3>Welcome <%= user.name %> !</h3>
+<span style="color:#317eac;">Class Code: </span><%= user.class %><span style="color:#317eac;"> &emsp; Class Title:   </span><%= user.class_title %><br>
+
+<ul class="list-group">
+  <% quizzes.forEach(function(quiz){ %>
+
+    <li class="list-group-item">
+
+        <div class="row">
+          <div class="col-md-6  col-sd-6">
+            <div class="row">
+
+              <div  class="col-lg-7 col-md-9 col-sm-7 col-xs-7">
+                <h3><%= quiz.title %> </h3>
+                <%= quiz.created_at %>
+              </div>
+              <div  class="col-lg-5 col-md-3 col-sm-5 col-xs-5 publishWell">
+
+                <form method="POST" action="/quizzes/reviewable/<%= quiz._id %> ">
+                  <input class = "btn btn-default" type="submit" value="Publish?">
+                  <% if(quiz.reviewable == true){ %>
+                    <label class="radio-inline"><input type="radio" name="reviewable" checked="checked" value="true">YES</label>
+                    <label class="radio-inline"><input type="radio" name="reviewable" value="false">NO</label>
+                  <% }else{ %>
+                    <label class="radio-inline"><input type="radio" name="reviewable" value="true">YES</label>
+                    <label class="radio-inline"><input type="radio" name="reviewable" checked="checked" value="false">NO</label>
+                  <% } %>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4  col-sd-4 pull-right">
+            <h3>
+              <a href="/quizzes/edit/<%= quiz._id %>" class="btn btn-default" role="button">About</a>
+              <a href="/quizzes/questions/add/<%= quiz._id %>" class="btn btn-primary" role="button">Edit</a>
+              <% if(quiz.numQuestions==0){ %>
+                <a href="/quiz/<%= quiz._id %>" target="_blank" class="btn btn-success" role="button" disabled>Play <span class="badge"><%= quiz.plays %></span></a>
+              <% }else{ %>
+                <a href="/quiz/<%= quiz._id %>" target="_blank" class="btn btn-success" role="button">Play <span class="badge"><%= quiz.plays %></span></a>
+              <% } %>
+              <a href="#"  role="button" class="btn btn-danger delete-quiz" data-id ="<%= quiz._id %>" >Delete</a>
+            </h3>
+          </div>
+        </div>
+    </li>
+  <%  })  %>
+
+</ul>
+
+
+
+
+<% include partials/footer %>

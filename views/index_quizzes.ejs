@@ -1,0 +1,21 @@
+<% include partials/header %>
+<h1><%= title %> </h1>
+
+
+  <% quizzes.forEach(function(quiz){ %>
+      <%= quiz._id %><br>
+      <%= quiz.title %><br>
+      <%= quiz.created_at %><br>
+      <%= quiz.description %><br>
+      <%= quiz.class %><br>
+      <%= quiz.reviewable %><br>
+      <%= quiz.plays %><br>
+      <hr>
+  <%  })  %>
+
+
+
+
+
+
+<% include partials/footer %>

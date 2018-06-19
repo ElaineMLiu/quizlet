@@ -1,0 +1,21 @@
+<html>
+  <head>
+      <title> Class </title>
+      <link rel="stylesheet" type="text/css" href="https://bootswatch.com/3/cerulean/bootstrap.min.css">
+      <link rel="stylesheet" type="text/css" href="/css/style.css">
+      <script   src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+        crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+
+    <div class="container">
+      <div class="buffer"></div>
+      <%- messages('message', locals) %>
+
+        <% if(errors){ %>
+          <% for (let i=0; i < errors.length; i++) { %>
+            <div class="alert alert-danger" > <%= errors[i].msg %></div>
+          <%}%>
+        <% } %>

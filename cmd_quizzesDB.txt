@@ -1,0 +1,98 @@
+http://mongoosejs.com/docs/schematypes.html
+
+In cmd, cd into C:\mongodb\bin
+mongo
+
+cls will clear the screen
+
+> show dbs
+admin        0.000GB
+config       0.000GB
+customerapp  0.000GB
+local        0.000GB
+> use nodeqb
+switched to db nodeqb
+> db.createCollection('quizzes');
+{ "ok" : 1 }
+> show collections
+quizzes
+> db.quizzes.insert({title:"Electricity",created_at:"2018_01_10",description:"Ch16~17",class:"wXy1z",reviewable:true,plays:2});
+WriteResult({ "nInserted" : 1 })
+> db.quizzes.find().pretty();
+{
+        "_id" : ObjectId("5b1bcc4c74cfff4bd4df3876"),
+        "title" : "Electricity",
+        "created_at" : "2018_01_10",
+        "description" : "Ch16~17",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 2
+}
+> db.quizzes.insert({title:"Magnetism",created_at:"2018_02_01",description:"Ch18~19",class:"wXy1z",reviewable:true,plays:1});
+WriteResult({ "nInserted" : 1 })
+> db.quizzes.find()
+{ "_id" : ObjectId("5b1bcc4c74cfff4bd4df3876"), "title" : "Electricity", "created_at" : "2018_01_10", "description" : "Ch16~17", "class" : "wXy1z", "reviewable" : true, "plays" : 2 }
+{ "_id" : ObjectId("5b1bcc8674cfff4bd4df3877"), "title" : "Magnetism", "created_at" : "2018_02_01", "description" : "Ch18~19", "class" : "wXy1z", "reviewable" : true, "plays" : 1 }
+>
+db.quizzes.find().pretty();
+{
+        "_id" : ObjectId("5b1bcc4c74cfff4bd4df3876"),
+        "title" : "Electricity",
+        "created_at" : "2018_01_10",
+        "description" : "Ch16~17",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 3
+}
+{
+        "_id" : ObjectId("5b1bcc8674cfff4bd4df3877"),
+        "title" : "Magnetism",
+        "created_at" : "2018_02_01",
+        "description" : "Ch18~19",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 1
+}
+> db.quizzes.update({title: "Electricity"},{$set:{created_at: ISODate()}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.quizzes.find().pretty();
+{
+        "_id" : ObjectId("5b1bcc4c74cfff4bd4df3876"),
+        "title" : "Electricity",
+        "created_at" : ISODate("2018-06-09T13:11:21.623Z"),
+        "description" : "Ch16~17",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 3
+}
+{
+        "_id" : ObjectId("5b1bcc8674cfff4bd4df3877"),
+        "title" : "Magnetism",
+        "created_at" : "2018_02_01",
+        "description" : "Ch18~19",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 1
+}
+> db.quizzes.update({title: "Magnetism"},{$set:{created_at: ISODate()}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.quizzes.find().pretty();
+{
+        "_id" : ObjectId("5b1bcc4c74cfff4bd4df3876"),
+        "title" : "Electricity",
+        "created_at" : ISODate("2018-06-09T13:11:21.623Z"),
+        "description" : "Ch16~17",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 3
+}
+{
+        "_id" : ObjectId("5b1bcc8674cfff4bd4df3877"),
+        "title" : "Magnetism",
+        "created_at" : ISODate("2018-06-09T13:11:41.539Z"),
+        "description" : "Ch18~19",
+        "class" : "wXy1z",
+        "reviewable" : true,
+        "plays" : 1
+}
+>

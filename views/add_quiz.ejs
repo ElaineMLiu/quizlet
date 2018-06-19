@@ -1,0 +1,25 @@
+<% include partials/header %>
+
+<h1><%= title %> </h1>
+
+<form method="POST" action="/quizzes/add">
+  <div id="form-group" >
+    <label>Title </label>
+    <input class="form-control" name="title" type= "text" placeholder="Physics Quiz">
+  </div>
+  <br>
+  <!-- div id="form-group" >
+    <label>Class </label>
+    <input class="form-control" name="class" type= "text" placeholder="wXy1z">
+  </div>
+  <br -->
+  <div id="form-group" >
+    <label>Description </label>
+    <textarea class="form-control" name="description" placeholder="Chapter 1 Review"></textarea>
+  </div>
+  <br>
+
+  <input class = "btn-btn-primary" type="submit" value="Submit">
+</form>
+
+<% include partials/footer %>

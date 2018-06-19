@@ -1,0 +1,29 @@
+<% include partials/header %>
+
+<h1>Log In </h1>
+<hr>
+
+<form method="POST" action="/users/login">
+  <div id="form-group" >
+    <label>Email </label>
+    <input class="form-control" name="username" type= "text">
+  </div>
+  <br>
+  <div id="form-group" >
+    <label>Password </label>
+    <input class="form-control" name="password" type= "password">
+  </div>
+  <br>
+  <input class = "btn btn-primary" type="submit" value="OK">
+</form>
+
+<hr>
+<h3> Note to Demo: </h3>
+Name: ELiu &emsp; email: eliu@gapp.gmail.com &emsp; password: aaaaa &emsp;  class code: wXy1z &emsp; class title: Physics &emsp; role: teacher <br>
+Name: MsLee &emsp; email: mlee@gapp.nthu.edu.tw &emsp; password: 123 &emsp;  class code: abc123 &emsp; class title: Algebra &emsp; role: teacher <br>
+Name: Ann &emsp; email: ann@yahoo.com  &emsp; password: wxy &emsp;  class code: wXy1z &emsp; class title: Physics &emsp; role: student <br>
+Name: Bill &emsp; email: bill@yahoo.com &emsp; password: 123 &emsp;  class code: wXy1z &emsp; class title: Physics &emsp; role: student <br>
+Name: June &emsp; email: june@yahoo.com &emsp; password: abc &emsp;  class code: abc123 &emsp; class title: Algebra &emsp; role: student <br>
+
+
+<% include partials/footer %>

@@ -1,0 +1,60 @@
+<% include partials/header2 %>
+<div class = "container_no_shrink">
+
+    <div class="row">
+      <div class="col-md-12  col-sd-12">
+        <h3><%= question.question %> </h3>
+      </div>
+
+      <div class="col-md-6  col-sd-6">
+        <% if(question.choiceCorrect==='choiceA'){ %>
+          <h3 style="background-color: #dff0d8;" >
+            A <%= question.choiceA %>
+          </h3>
+        <% }else{ %>
+          <h3>
+            A <%= question.choiceA %>
+          </h3>
+        <% } %>
+      </div>
+
+      <div class="col-md-6  col-sd-6">
+        <% if(question.choiceCorrect==='choiceB'){ %>
+          <h3 style="background-color: #dff0d8;" >
+            B <%= question.choiceB %>
+          </h3>
+        <% }else{ %>
+          <h3>
+            B <%= question.choiceB %>
+          </h3>
+        <% } %>
+      </div>
+
+      <div class="col-md-6  col-sd-6">
+        <% if(question.choiceCorrect==='choiceC'){ %>
+          <h3 style="background-color: #dff0d8;" >
+            C <%= question.choiceC %>
+          </h3>
+        <% }else{ %>
+          <h3>
+            C <%= question.choiceC %>
+          </h3>
+        <% } %>
+      </div>
+
+      <div class="col-md-6  col-sd-6">
+        <% if(question.choiceCorrect==='choiceD'){ %>
+          <h3 style="background-color: #dff0d8;" >
+            D <%= question.choiceD %>
+          </h3>
+        <% }else{ %>
+          <h3>
+            D <%= question.choiceD %>
+          </h3>
+        <% } %>
+      </div>
+    </div>
+
+
+</div>
+<% include partials/footer2 %>

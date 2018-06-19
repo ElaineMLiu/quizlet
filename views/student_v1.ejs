@@ -1,0 +1,77 @@
+<% include partials/header %>
+
+
+<div class="pages">
+  <div class="quiz page">
+    <p id="quizMessage">Waiting for teacher to start quiz</p>
+    <div id="studentQuiz"></div>
+  </div>
+  <div class="login page">
+    <div class="form">
+      <h3 class="title">What's your name?</h3>
+      <input class="usernameInput" type="text" maxlength="14" />
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+<script>
+  var $window = $(window);
+  var $usernameInput = $('.usernameInput'); // Input for username
+  var $loginPage = $('.login.page'); // The login page
+  var $quizPage = $('.quiz.page'); // The chatroom page
+  var $quizMsg = $('#quizMessage'); // Quiz status message
+
+  var username; // Also used to track if logged in
+  var $currentInput = $usernameInput.focus();
+
+  var socket = io();
+
+  $quizPage.hide();
+
+  socket.on("start quiz", (quizId) => {
+    console.log(quizId);
+    // display quiz
+    $.get( "/student_quiz/" + quizId, function( data ) {
+      $( "#studentQuiz" ).html( data );
+    });
+
+    $quizMsg.html("Quiz has started!");
+  });
+
+  socket.on("end quiz", (msg) => {
+    console.log(msg);
+  });
+
+
+  const setUsername = () => {
+    username = cleanInput($usernameInput.val().trim());
+
+    // If the username is valid
+    if (username) {
+      $loginPage.fadeOut();
+      $quizPage.show();
+      $loginPage.off('click');
+
+      // Tell the server your username
+      socket.emit('add user', username);
+    }
+  }
+
+  // Prevents input from having injected markup
+  const cleanInput = (input) => {
+    return $('<div/>').text(input).html();
+  }
+
+  $window.keydown(event => {
+    // When the client hits ENTER on their keyboard
+    if (event.which === 13) {
+      if (!username) {
+        setUsername();
+      }
+    }
+  });
+
+</script>
+
+<% include partials/footer %>

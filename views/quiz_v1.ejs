@@ -1,0 +1,77 @@
+<% include partials/header %>
+<h1><%= quiz.title %></h1>(required input field at creation)<hr>
+
+<h5>created_at (default current time) </h5><%= quiz.created_at %><hr>
+
+<h5>class (based on the teacher logged in who created it) </h5><%= quiz.class %><hr>
+
+<h5>reviewable (default is false) </h5><%= quiz.reviewable %><hr>
+
+<h5>plays (default is 0, update this after each classroom play) </h5><%= quiz.plays %><hr>
+
+<h5>description (required input field at creation) </h5><%= quiz.description %><hr>
+
+<h5>Students online: </h5>
+<p id="numStudents">0</p>
+<p id="roster"></p>
+
+<button id="startQuiz">Start Quiz</button>
+
+<button id="endQuiz">End Quiz</button>
+
+<h5>Questions</h5>
+<ul class="list-group">
+  <% questions.forEach(function(question){ %>
+      <%= question._id %><br>
+      <span id="quizId"><%= question.quiz_id %></span><br>
+      <%= question.question %><br>
+      <%= question.order %><br>
+      <%= question.choiceA %><br>
+      <%= question.choiceB %><br>
+      <%= question.choiceC %><br>
+      <%= question.choiceD %><br>
+      <%= question.choiceCorrect %><br>
+      <%= question.author %><br>
+      <%= question.included %><br>
+      <hr>
+
+
+  <%  })  %>
+
+</ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  const $numStudents = $('#numStudents');
+  const $startQuiz = $('#startQuiz');
+  const $endQuiz = $('#endQuiz');
+  const $roster = $('#roster');
+  const quizId = $('#quizId').html();
+
+  $startQuiz.click(function() {
+    socket.emit("start quiz", quizId);
+  });
+
+  socket.on("end quiz", function(msg) {
+    console.log(msg);
+  });
+
+  socket.on("user left", function(msg) {
+    console.log("users: " + msg.numUsers);
+    updateUsers(msg);
+  });
+
+  socket.on("user joined", function(msg) {
+    console.log("users: " + msg.numUsers);
+    updateUsers(msg);
+  });
+
+  const updateUsers = function(msg) {
+    $numStudents.html(msg.numUsers);
+    $roster.append(msg.username+'<br>');
+  }
+</script>
+
+<% include partials/footer %>

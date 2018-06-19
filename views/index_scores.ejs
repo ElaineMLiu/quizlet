@@ -1,0 +1,28 @@
+<% include partials/header %>
+<h1><%= title %> </h1>
+
+<% scores.forEach(function(score){ %>
+    <%= score._id %><br>
+    <%= score.class %><br>
+    <%= score.quiz_title %><br>
+    <%= score.score %><br>
+    <%= score.created_at %><br>
+    <%= score.student_id %><br>
+    <% score.details.forEach(function(questionLog){ %>
+      <%= questionLog.question %><br>
+      <%= questionLog.choiceA %><br>
+      <%= questionLog.choiceB %><br>
+      <%= questionLog.choiceC %><br>
+      <%= questionLog.choiceD %><br>
+      <%= questionLog.choiceStudent %><br>
+      <%= questionLog.choiceCorrect %><br>
+      <hr>
+    <% }); %>
+        Cannot just print an array of objects <%= score.details %><br>
+    <hr>
+<%  })  %>
+
+
+
+
+<% include partials/footer %>

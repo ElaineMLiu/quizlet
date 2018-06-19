@@ -1,0 +1,25 @@
+{
+  "name": "quizlet",
+  "version": "1.0.0",
+  "description": "Play quizzes in real-time!",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "ejs": "*",
+    "express": "*",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.15.3",
+    "express-validator": "^5.2.0",
+    "mongoose": "^4.10.2",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "socket.io": "2.1.1"
+  },
+  "author": "Elaine Liu",
+  "license": "ISC"
+}

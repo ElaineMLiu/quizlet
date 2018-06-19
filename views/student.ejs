@@ -1,0 +1,211 @@
+<% include partials/header2 %>
+
+
+<div class="pages">
+
+  <div class="login page">
+    <span style="color:#317eac;">Quiz ID:   </span><span id ='quizId'><%= quizId %></span><br>
+    <div class="form">
+      <h3 class="title">What's your name?</h3>
+      <input class="usernameInput" type="text" maxlength="14" />
+    </div>
+  </div>
+
+  <div class="waitPage">
+    <h1 >Waiting for teacher to start quiz</h1>
+  </div>
+
+  <div class="quizPage">
+    <button class="btn-lg btn-block btn-huge" id="A">A</button>
+    <button class="btn-lg btn-block btn-huge" id="B">B</button>
+    <button class="btn-lg btn-block btn-huge" id="C">C</button>
+    <button class="btn-lg btn-block btn-huge" id="D">D</button>
+  </div>
+
+  <div class="fastPage">
+    <h1 >You are fast!</h1>
+  </div>
+
+  <div class="showPage">
+    <h1 id="showMessage"></h1>
+    <h3><span id="correctNum"></span>out of <span id="numQuestions"></span></h3>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+<script>
+
+  var socket = io();
+
+
+  var $window = $(window);
+  var $usernameInput = $('.usernameInput'); // Input for username
+  var $loginPage = $('.login.page'); // The login page
+  var $quizPage = $('.quizPage'); // The chatroom page
+  var $waitPage = $('.waitPage');
+  var $showPage = $('.showPage');
+  var $fastPage = $('.fastPage');
+  var $showMessage = $('#showMessage'); // answer status message
+  var $correctNum = $('#correctNum');
+  var $numQuestions = $('#numQuestions');
+
+  var username; // Also used to track if logged in
+  var $currentInput = $usernameInput.focus();
+  var q=0;
+  var currentChoice = '';
+  var currentIsCorrect = false;
+  var score = 0;
+  var numQuestions;
+  var quizId = $('#quizId').html();
+
+  $quizPage.hide();
+  $waitPage.hide();
+  $showPage.hide();
+  $fastPage.hide();
+
+  const setUsername = () => {
+    username = cleanInput($usernameInput.val().trim());
+
+    // If the username is valid
+    if (username) {
+      //$loginPage.fadeOut();
+      $loginPage.hide();
+      $waitPage.show();
+      $loginPage.off('click');
+
+      // Tell the server your username
+      socket.emit('add user', username);
+    }
+  }
+
+  // Prevents input from having injected markup
+  const cleanInput = (input) => {
+    return $('<div/>').text(input).html();
+  }
+
+  $window.keydown(event => {
+    // When the client hits ENTER on their keyboard
+    if (event.which === 13) {
+      if (!username) {
+        setUsername();
+      }
+    }
+  });
+
+
+  socket.on("start quiz", function(msg){
+    if(username){
+      console.log(msg);
+      numQuestions = msg.numQuestions;
+      //$loginPage.fadeOut();
+      //$loginPage.off('click');
+      //$waitPage.fadeOut();
+      $waitPage.hide();
+      $quizPage.show();
+    }
+  }); //end 'start quiz'
+
+
+  $('#A').click(function(){
+    socket.emit('student answer',{quizId: quizId, q: q, username: username, studentChoice: 'choiceA'});
+    //$quizPage.fadeOut();
+    $quizPage.hide();
+    $quizPage.off('click');
+    $fastPage.show();
+  });
+  $('#B').click(function(){
+    socket.emit('student answer',{quizId: quizId, q: q, username: username, studentChoice: 'choiceB'});
+    //$quizPage.fadeOut();
+    $quizPage.hide();
+    $quizPage.off('click');
+    $fastPage.show();
+  });
+  $('#C').click(function(){
+    socket.emit('student answer',{quizId: quizId, q: q, username: username, studentChoice: 'choiceC'});
+    //$quizPage.fadeOut();
+    $quizPage.hide();
+    $quizPage.off('click');
+    $fastPage.show();
+  });
+  $('#D').click(function(){
+    socket.emit('student answer',{quizId: quizId, q: q, username: username, studentChoice: 'choiceD'});
+    //$quizPage.fadeOut();
+    $quizPage.hide();
+    $quizPage.off('click');
+    $fastPage.show();
+  });
+
+  socket.on("check answer", function(msg){
+    if(username){
+      if(msg.isCorrect){
+        currentIsCorrect = true;
+        score++;
+      }else{
+        currentIsCorrect = false;
+      }
+    }
+
+  });
+
+  socket.on("show answer", function(msg){
+    if(username){
+      console.log(msg);
+      //$loginPage.fadeOut();
+      //$loginPage.off('click');
+      //$quizPage.fadeOut();
+      $quizPage.hide();
+      $quizPage.off('click');
+      //$fastPage.fadeOut();
+      $fastPage.hide();
+      if(currentIsCorrect){
+        $('#showMessage').html('Good!');
+      }else{
+        $('#showMessage').html('Better luck next time!');
+      }
+      $('#correctNum').html(score+" ");
+      $('#numQuestions').html(numQuestions);
+      $showPage.show();
+    }
+
+  }); //end 'start quiz'
+
+  socket.on("next question", function(msg){
+    if(username){
+      console.log(msg);
+      currentIsCorrect = false;
+      q = msg.q;
+      numQuestions = msg.numQuestions;
+      //$loginPage.fadeOut();
+      //$loginPage.off('click');
+      //$showPage.fadeOut();
+      $showPage.hide();
+      $showPage.off('click');
+      $quizPage.show();
+    }
+
+  }); //end 'start quiz'
+
+  /*
+  socket.on("end quiz", (msg) => {
+    console.log(msg);
+  });
+  */
+
+  socket.on("end quiz", function(msg){
+    if(username){
+      console.log(msg);
+      //$loginPage.fadeOut();
+      //$loginPage.off('click');
+      //$showPage.fadeOut();
+      $('#showMessage').html('Your Score:');
+      $('#correctNum').html(score+" ");
+      $('#numQuestions').html(numQuestions);
+      $showPage.show();
+    }
+
+  }); //end 'start quiz'
+
+</script>
+
+<% include partials/footer2 %>

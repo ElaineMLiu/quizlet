@@ -1,0 +1,31 @@
+<h1><%= quiz.title %></h1>(required input field at creation)<hr>
+
+<h5>created_at (default current time) </h5><%= quiz.created_at %><hr>
+
+<h5>class (based on the teacher logged in who created it) </h5><%= quiz.class %><hr>
+
+<h5>reviewable (default is false) </h5><%= quiz.reviewable %><hr>
+
+<h5>plays (default is 0, update this after each classroom play) </h5><%= quiz.plays %><hr>
+
+<h5>description (required input field at creation) </h5><%= quiz.description %><hr>
+
+<h5>Questions</h5>
+<ul class="list-group">
+    <% questions.forEach(function(question){ %>
+    <%= question._id %><br>
+    <span id="quizId"><%= question.quiz_id %></span>span><br>
+    <%= question.question %><br>
+    <%= question.order %><br>
+    <%= question.choiceA %><br>
+    <%= question.choiceB %><br>
+    <%= question.choiceC %><br>
+    <%= question.choiceD %><br>
+    <%= question.choiceCorrect %><br>
+    <%= question.author %><br>
+    <%= question.included %><br>
+    <hr>
+
+    <%  })  %>
+
+</ul>

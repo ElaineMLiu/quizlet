@@ -1,0 +1,40 @@
+.alert-error{
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.alert-success_msg{
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.container_no_shrink{
+  width: 1100px;
+}
+
+.answerWell{
+	height: 80px;
+	overflow:scroll;
+}
+
+.makeQuestionWell{
+  background-color: #add8e6;
+  padding: 45px;
+}
+
+.radioWell{
+  padding: 15px;
+}
+
+.publishWell{
+  display: inline-block;
+  padding: 15px 10px;
+  border: dotted #add8e6 2px;
+  border-radius: 5px;
+}
+
+.buffer{
+  padding: 30px;
+}

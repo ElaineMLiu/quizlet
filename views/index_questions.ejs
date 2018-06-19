@@ -1,0 +1,27 @@
+<% include partials/header %>
+<h1><%= title %> </h1>
+
+<ul class="list-group">
+  <% questions.forEach(function(question){ %>
+      <%= question._id %><br>
+      <%= question.quiz_id %><br>
+      <%= question.question %><br>
+      <%= question.order %><br>
+      <%= question.choiceA %><br>
+      <%= question.choiceB %><br>
+      <%= question.choiceC %><br>
+      <%= question.choiceD %><br>
+      <%= question.choiceCorrect %><br>
+      <%= question.author %><br>
+      <%= question.included %><br>
+      <hr>
+
+
+  <%  })  %>
+
+</ul>
+
+
+
+
+<% include partials/footer %>
